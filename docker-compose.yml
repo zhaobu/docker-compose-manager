@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+# 局域网dns服务器
+  coredns:
+    image: coredns/coredns
+    container_name: coredns  
+    restart: always
+    volumes:                                     
+      - ./coredns/Corefile.conf:/etc/coredns/Corefile.conf   
+    ports:
+    - 53:53/udp
+    - 53:53/tcp
+    command: ["-conf", "/etc/coredns/Corefile.conf"]
+    networks:
+      - docker_manger
+
+# 内网穿透
+  nps_server:                         
+    image: oldiy/nps-server
+    container_name: nps_server
+    restart: always
+    ports:         
+      - 9911:8080                              
+      - 9913:8024                              
+      - 9914:80
+    networks:
+      - docker_manger   
+    volumes:                                     
+      - ./nps/server/conf/nps.conf:/nps/conf/nps.conf  
+
+# docker 可视化管理
+  portainer:                         
+    image: portainer/portainer:latest
+    container_name: portainer
+    restart: always
+    ports:         
+      - 9910:9000                              
+    volumes:                                     
+      - /var/run/docker.sock:/var/run/docker.sock      
+      - portainerdata:/data
+    networks:
+      - docker_base_service     
+
+networks:
+  docker_manger:
+    external: true
+    name: default
+    
+volumes:
+  portainerdata:
+    name: portainerdata    
