@@ -26,7 +26,7 @@ services:
     networks:
       - docker_manger   
     volumes:                                     
-      - ./nps/server/conf/nps.conf:/nps/conf/nps.conf  
+      - ./nps/server/conf/:/nps/conf/  
 
 # docker 可视化管理
   portainer:                         
@@ -39,13 +39,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock      
       - portainerdata:/data
     networks:
-      - docker_base_service     
+      - docker_manger     
 
 networks:
   docker_manger:
-    external: true
-    name: default
-    
+    external: false
+    name: docker_manger
+
 volumes:
   portainerdata:
     name: portainerdata    
