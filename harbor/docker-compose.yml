@@ -236,7 +236,7 @@ services:
       - harbor
     dns_search: .
     ports:
-      - 80:8080
+      - 8080:8080
     depends_on:
       - registry
       - core
@@ -247,25 +247,11 @@ services:
       options:  
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "proxy"
-    
-# 局域网dns服务器
-  coredns:
-    image: coredns/coredns
-    container_name: coredns  
-    restart: always
-    volumes:                                     
-      - ./coredns/Corefile.conf:/etc/coredns/Corefile.conf   
-    ports:
-    - 53:53/udp
-    - 53:53/tcp
-    command: ["-conf", "/etc/coredns/Corefile.conf"]
-    networks:
-      - harbor
 
 networks:
   harbor:
-    external: true
-    name: default
+    external: false
+    name: harbor
     
 volumes:
   harbor_logdata:
