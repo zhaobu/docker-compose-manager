@@ -20,14 +20,16 @@ services:
     container_name: nps_server
     restart: always
     ports:         
-      - 2141:8080                              
+      - 2141:8080 
+      #  暴露对外client连接端口
+      - 2142:8024                              
       - 2143:80
       - 2152-2162:2152-2162
     networks:
       - docker_manger   
     volumes:                                     
       - ./nps/server/conf/:/nps/conf/  
-
+      - ./nps/server/logs/:/nps/logs/
 # docker 可视化管理
   portainer:                         
     image: portainer/portainer:latest
