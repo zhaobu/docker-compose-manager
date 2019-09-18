@@ -20,9 +20,14 @@ services:
     container_name: nps_server
     restart: always
     ports:         
-      - 9911:8080                              
-      - 9913:8024                              
-      - 9914:80
+      - 2141:8080                              
+      - 2143:80
+      - 2152:2152                         
+      - 2153:2153                       
+      - 2154:2154                         
+      - 2155:2155                         
+      - 2156:2156                         
+      - 2157:2157                         
     networks:
       - docker_manger   
     volumes:                                     
