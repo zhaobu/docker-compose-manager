@@ -90,7 +90,7 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - ./data/database:/var/lib/postgresql/data:z
+      - ./data/database:/var/lib/postgresql/data:rw
     networks:
       harbor:
     dns_search: .
