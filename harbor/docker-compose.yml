@@ -15,7 +15,7 @@ services:
     volumes:
       - harbor_logdata:/run
       - harbor_logdata:/etc/logrotate.d
-      - /home/docker/harbor/logs/:/var/log/docker/:z
+      - ./logs:/var/log/docker/:rw
       - ./common/config/log/logrotate.conf:/etc/logrotate.d/logrotate.conf:z
       - ./common/config/log/rsyslog_docker.conf:/etc/rsyslog.d/rsyslog_docker.conf:z
     ports:
