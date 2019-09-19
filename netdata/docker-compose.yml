@@ -1,0 +1,37 @@
+version: '3.7'
+# volumes:
+#   caddy:
+#     name: netdata_caddy
+
+services:
+# https服务器
+  caddy:
+    image: abiosoft/caddy
+    container_name: netdata_caddy
+    ports:
+      - 8480:80
+      - 8443:443
+    volumes:
+      - ./caddy/Caddyfile.conf:/etc/Caddyfile
+      - ./caddy/.caddy:/root/.caddy
+      - ./caddy/www/:/srv/
+    # environment:
+    #   ACME_AGREE: 'true'
+    command: ["--conf=/etc/Caddyfile","--log=stdout","-port=80"]  
+
+# 性能监测
+  netdata:
+    restart: always
+    hostname: netdata.cyhd.org
+    image: netdata/netdata
+    container_name: netdata
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro

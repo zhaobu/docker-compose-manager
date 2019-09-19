@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+# ylzq
+  ylzq:
+    restart: always
+    image: ylzq:v19.3.1
+    hostname: 90test
+    container_name: ylzq
+    environment:
+      uid: 81256
+    volumes:
+      - ./sources.list:/etc/apt/sources.list
