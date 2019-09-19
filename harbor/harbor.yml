@@ -37,7 +37,7 @@ database:
   max_open_conns: 100
 
 # The default data volume
-data_volume: /home/docker/harbor/data
+data_volume: /home/docker/docker-compose-manager/harbor/data
 
 # Harbor Storage settings by default is using /data dir on local filesystem
 # Uncomment storage_service setting If you want to using external storage
