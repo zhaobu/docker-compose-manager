@@ -1,6 +1,6 @@
 # 本脚本只适用于centos7安装最新版docker-ce,会替换系统镜像源为阿里云镜像
 ## switch mirrors.aliyun
-if [ $1 -ne "out"]; then
+if [ $1 -ne "out" ]; then
     echo "china vps,change aliyun repo"
     mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
     curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
