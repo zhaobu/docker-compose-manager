@@ -10,5 +10,5 @@ services:
     environment:
       uid: 81256
     volumes:
-      - ./sources.list:/etc/apt/sources.list
+      # - ./sources.list:/etc/apt/sources.list
       - ./yiluzhuanqian_global.conf:/etc/yiluzhuanqian_global.conf
