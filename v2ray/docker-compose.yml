@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+ v2ray_nginx:
+    image: nginx:latest
+    container_name: v2ray_nginx
+    restart: always
+    volumes:
+      - ./nginx/key/:/etc/nginx/key/ #证书
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - v2raynginxdata/:/var/log/nginx/:rw
+      - v2raynginxdata/:/var/cache/nginx
+      - v2raynginxdata/:/run
+    networks:
+      - v2ray_net
+    dns_search: .
+    ports:
+      - 4080:80
+
+ v2ray:
+    image: v2ray/official
+    container_name: v2ray
+    restart: always
+    volumes:
+      - ./v2ray/config.json:/etc/v2ray/config.json
+    networks:
+      - v2ray_net
+    command: ["v2ray", "-config=/etc/v2ray/config.json"]
+    ports:
+      - 3350:3350  
+networks:
+  v2ray_net:
+    external: false
+    name: v2ray_net
+
+volumes:
+  v2raynginxdata:
+    name: v2raynginxdata
