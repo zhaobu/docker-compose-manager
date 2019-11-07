@@ -1,6 +1,7 @@
 version: "3.7"
+
 services:
- v2ray_nginx:
+  v2ray_nginx:
     image: nginx:latest
     container_name: v2ray_nginx
     restart: always
@@ -17,17 +18,28 @@ services:
     ports:
       - 4080:80
 
- v2ray:
-    image: v2ray/official
-    container_name: v2ray
+  v2ray_tomcat:
+    image: tomcat:latest
+    container_name: v2ray_tomcat
     restart: always
-    volumes:
-      - ./v2ray/config.json:/etc/v2ray/config.json
+    # volumes:
+    #   - ./v2ray/config.json:/etc/v2ray/config.json
     networks:
       - v2ray_net
-    command: ["v2ray", "-config=/etc/v2ray/config.json"]
     ports:
-      - 3350:3350  
+      - 3360:8080
+
+#  v2ray:
+#     image: v2ray/official
+#     container_name: v2ray
+#     restart: always
+#     volumes:
+#       - ./v2ray/config.json:/etc/v2ray/config.json
+#     networks:
+#       - v2ray_net
+#     command: ["v2ray", "-config=/etc/v2ray/config.json"]
+#     ports:
+#       - 3350:3350
 networks:
   v2ray_net:
     external: false

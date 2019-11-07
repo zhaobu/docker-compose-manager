@@ -18,10 +18,7 @@
                 ]
             },
             "streamSettings": {
-                "network": "ws",
-                "wsSettings": {
-                    "path": "/v2raypass"
-                }
+                "network": "tcp"
             },
             "sniffing": {
                 "enabled": true,
