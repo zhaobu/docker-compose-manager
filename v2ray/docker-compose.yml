@@ -18,7 +18,7 @@ services:
       - ./key/:/root/.caddy/key/ #证书
     environment:
       ACME_AGREE: "true"
-    command: ["--conf=/etc/Caddyfile", "--log=stdout"]
+    command: ["--conf=/etc/Caddyfile", "--log=stdout", "-agree"]
 
   v2ray_nginx:
     image: nginx:latest
