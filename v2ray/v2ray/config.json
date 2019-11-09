@@ -6,12 +6,12 @@
     },
     "inbounds": [
         {
-            "port": 3350,
+            "port": 2489,
             "protocol": "vmess",
             "settings": {
                 "clients": [
                     {
-                        "id": "8caf2282-5171-4a6c-a55d-66f7c1daf096",
+                        "id": "41b80206-fb67-4ebe-96b4-acf0ca918300",
                         "level": 1,
                         "alterId": 233
                     }
@@ -29,17 +29,6 @@
                     "http",
                     "tls"
                 ]
-            }
-        },
-        {
-            "protocol": "shadowsocks",
-            "port": 3752,
-            "settings": {
-                "method": "aes-128-cfb",
-                "password": "12321hdxc@433412",
-                "network": "tcp,udp",
-                "level": 1,
-                "ota": false
             }
         }
     ],

@@ -16,19 +16,19 @@ services:
       - v2ray_net
     # dns_search: .
     ports:
-      - 4070:80
-      - 4071:443
+      - 2488:80
+      - 2489:443
 
-  v2ray_tomcat:
-    image: tomcat:latest
-    container_name: v2ray_tomcat
-    restart: always
-    # volumes:
-    #   - ./v2ray/config.json:/etc/v2ray/config.json
-    networks:
-      - v2ray_net
-    ports:
-      - 3360:8080
+  # v2ray_tomcat:
+  #   image: tomcat:latest
+  #   container_name: v2ray_tomcat
+  #   restart: always
+  #   # volumes:
+  #   #   - ./v2ray/config.json:/etc/v2ray/config.json
+  #   networks:
+  #     - v2ray_net
+  #   ports:
+  #     - 3360:8080
 
   v2ray:
     image: v2ray/official
@@ -40,8 +40,6 @@ services:
     networks:
       - v2ray_net
     command: ["v2ray", "-config=/etc/v2ray/config.json"]
-    # ports:
-    #   - 3350:3350
 
 networks:
   v2ray_net:
