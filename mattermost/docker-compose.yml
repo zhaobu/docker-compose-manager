@@ -36,7 +36,7 @@ services:
     networks:
       mattermostnet:
     volumes:
-      - ./volumes/app/config:/mattermost/config:rw
+      - ./volumes/app/config/config.json:/mattermost/config/config.json:rw
       - ./volumes/app/data:/mattermost/data:rw
       - ./volumes/app/logs:/mattermost/logs:rw
       - ./volumes/app/plugins:/mattermost/plugins:rw
