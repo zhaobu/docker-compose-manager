@@ -26,7 +26,7 @@ services:
       - mattermostdbdata:/tmp
       - ./volumes/db/etc/wal-e.d/env:/etc/wal-e.d/env
       - /etc/localtime:/etc/localtime:ro
-    env_file: .env  
+    env_file: .env
 
   app:
     image: mattermost/mattermost-prod-app
@@ -42,7 +42,9 @@ services:
       - ./volumes/app/plugins:/mattermost/plugins:rw
       - ./volumes/app/client-plugins:/mattermost/client/plugins:rw
       - /etc/localtime:/etc/localtime:ro
-    env_file: .env  
+    env_file: .env
+    # environment:
+    #   - MM_SQLSETTINGS_DATASOURCE=postgres://${MM_USERNAME}:${MM_PASSWORD}@db:5432/${MM_DBNAME}?sslmode=disable&connect_timeout=10
 
   web:
     image: mattermost/mattermost-prod-web
