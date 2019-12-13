@@ -8,49 +8,28 @@ networks:
 volumes:
   mattermostwebdata:
     name: mattermostwebdata
+  mattermostdbdata:
+    name: mattermostdbdata
+  mattermostappdata:
+    name: mattermostappdata
 
 services:
   db:
-    image: postgres:alpine
+    image: mattermost/mattermost-prod-db
     restart: unless-stopped
     networks:
       mattermostnet:
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "pg_isready",
-          "-U",
-          "$POSTGRES_USER",
-          "-d",
-          "$POSTGRES_DB",
-          "||",
-          "exit 1",
-        ]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
     volumes:
-      - ./volumes/db:/var/lib/postgresql/data
+      - mattermostdbdata:/var/run/postgresql
+      - ./volumes/db/usr/share/postgresql/:/usr/share/postgresql
+      - ./volumes/db/var/lib/postgresql/data:/var/lib/postgresql/data
+      - mattermostdbdata:/tmp
+      - ./volumes/db/etc/wal-e.d/env:/etc/wal-e.d/env
       - /etc/localtime:/etc/localtime:ro
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    # uncomment the following to enable backup
-    #  - AWS_ACCESS_KEY_ID=XXXX
-    #  - AWS_SECRET_ACCESS_KEY=XXXX
-    #  - WALE_S3_PREFIX=s3://BUCKET_NAME/PATH
-    #  - AWS_REGION=us-east-1
+    env_file: .env  
 
   app:
     image: mattermost/mattermost-prod-app
-    # uncomment following lines for team edition or change UID/GID
-    # args:
-    #   #   - edition=team
-    #   - PUID=1000
-    #   - PGID=1000
     restart: unless-stopped
     depends_on:
       - db
@@ -63,23 +42,12 @@ services:
       - ./volumes/app/plugins:/mattermost/plugins:rw
       - ./volumes/app/client-plugins:/mattermost/client/plugins:rw
       - /etc/localtime:/etc/localtime:ro
-    environment:
-      # set same as db credentials and dbname
-      - MM_USERNAME=${POSTGRES_USER}
-      - MM_PASSWORD=${POSTGRES_PASSWORD}
-      - MM_DBNAME=${POSTGRES_DB}
-      # - MM_CONFIG=
-      # use the credentials you've set above, in the format:
-      # MM_SQLSETTINGS_DATASOURCE=postgres://${MM_USERNAME}:${MM_PASSWORD}@db:5432/${MM_DBNAME}?sslmode=disable&connect_timeout=10
-      - MM_SQLSETTINGS_DATASOURCE=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable&connect_timeout=10
-
-      # in case your config is not in default location
-      #- MM_CONFIG=/mattermost/config/config.json
+    env_file: .env  
 
   web:
     image: mattermost/mattermost-prod-web
     ports:
-      - "7080:80"
+      - "2163:80"
       - "7443:443"
     read_only: true
     restart: unless-stopped
