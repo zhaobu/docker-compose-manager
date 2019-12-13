@@ -6,4 +6,4 @@ zabbix-grafana/zbx_env/var/lib/mysql
 ylzq/yiluzhuanqian_global.conf
 *.log
 mattermost/volumes/db
-mattermost/volumes/app/plugins
+mattermost/volumes/app/*
