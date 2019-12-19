@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  # 为知笔记服务器
+  wiznote:
+    image: wiznote/wizserver
+    container_name: wiznote
+    restart: always
+    volumes:
+      - ./data/:/wiz/storage
+      - /etc/localtime:/etc/localtime:ro
+      # win下启动容器后执行docker exec -it wiz /bin/bash cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime exit
+    environment:
+      # 去掉，就可以继续使用2G内存来运行为知笔记服务
+      - SEARCH=true
+    ports:
+      - 8280:80
