@@ -1,9 +1,9 @@
-harbor/harbor.v1.9.0.tar.gz
+harbor/harbor.v1.9.4.tar.gz
 nps/client/npc.log
 netdata/caddy/www/*.log
 harbor/data/registry/docker
 zabbix-grafana/zbx_env/var/lib/mysql
 ylzq/yiluzhuanqian_global.conf
 *.log
-mattermost/volumes/db
+mattermost/volumes/db/*
 mattermost/volumes/app/*
