@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  # smtp邮件服务器
+  postemail:
+    image: analogic/poste.io
+    container_name: postemail
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./data:/data
+    ports:
+      - "9025:25" #SMTP
+      - "9080:80" #http
+      - "9110:110" #POP3
+      - 9143:143 #IMAP
+      - 9443:443
+      - 9465:465
+      - 9587:587
+      - 9993:993
+      - 9995:995
+    # command: ["-conf", "/etc/coredns/Corefile.conf"]
+    # networks:
+    #   - docker_manger
+# networks:
+#   docker_manger:
+#     external: false
+#     name: docker_manger
+# volumes:
+#   portainerdata:
+#     name: portainerdata
