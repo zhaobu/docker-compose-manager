@@ -1,0 +1,47 @@
+version: "3.7"
+
+networks:
+  sonarqubenet:
+    external: false
+    name: sonarqubenet
+
+volumes:
+  sonarqubedata:
+    name: sonarqubedata
+
+services:
+  sonarqube:
+    image: sonarqube
+    container_name: sonarqube
+    restart: always
+    volumes:
+      - ./sonarqube/conf:/opt/sonarqube/conf
+      - ./sonarqube/data:/opt/sonarqube/data
+      # - ./sonarqube/logs:/opt/sonarqube/logs
+      - ./sonarqube/extensions:/opt/sonarqube/extensions
+    ports:
+      - 9001:9000
+    env_file: ./.env
+    environment:
+      - SONARQUBE_JDBC_URL=postgresql://sonarqube_postgres:5432/sona
+      - SONARQUBE_JDBC_USERNAME=${POSTGRES_USER}
+      - SONARQUBE_JDBC_PASSWORD=${POSTGRES_PASSWORD}
+    command: ["--init"]
+    networks:
+      - sonarqubenet
+
+  # gitea 可以用postgres也可以用mysql
+  sonarqube_postgres:
+    image: postgres:alpine
+    # ports:
+    #   - 5432:5432
+    restart: always
+    container_name: sonarqube_postgres
+    volumes:
+      - ./sonarqube_postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      sonarqubenet:
