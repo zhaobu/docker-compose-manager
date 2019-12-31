@@ -2,7 +2,7 @@
 
 # The IP address or hostname to access admin UI and registry service.
 # DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
-hostname: 120.78.13.122:8080
+hostname: 192.168.0.90:8180
 
 # http related config
 http:
@@ -37,7 +37,7 @@ database:
   max_open_conns: 100
 
 # The default data volume
-data_volume: /home/docker/docker-compose-manager/harbor/data
+data_volume: /home/docker/docker_baseservice/harbor/data
 
 # Harbor Storage settings by default is using /data dir on local filesystem
 # Uncomment storage_service setting If you want to using external storage
@@ -84,7 +84,7 @@ log:
     # are all valid.
     rotate_size: 200M
     # The directory on your host that store log
-    location: /home/docker/harbor/logs
+    location: /home/docker/docker_baseservice/harbor/logs
 
   # Uncomment following lines to enable external syslog endpoint.
   # external_endpoint:
@@ -156,7 +156,9 @@ _version: 1.9.0
 proxy:
   http_proxy:
   https_proxy:
-  no_proxy: 127.0.0.1,localhost,.local,.internal,log,db,redis,nginx,core,portal,postgresql,jobservice,registry,registryctl,clair
+  # no_proxy endpoint will append to already contained list:
+  # 127.0.0.1,localhost,.local,.internal,log,db,redis,nginx,core,portal,postgresql,jobservice,registry,registryctl,clair,chartmuseum,notary-server
+  no_proxy:
   components:
     - core
     - jobservice

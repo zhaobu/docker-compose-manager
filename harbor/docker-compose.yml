@@ -1,7 +1,7 @@
-version: '3.7'
+version: "3.7"
 services:
   log:
-    image: goharbor/harbor-log:v1.9.0
+    image: goharbor/harbor-log:v1.9.4
     container_name: harbor-log
     restart: always
     dns_search: .
@@ -23,7 +23,7 @@ services:
     networks:
       - harbor
   registry:
-    image: goharbor/registry-photon:v2.7.1-patch-2819-v1.9.0
+    image: goharbor/registry-photon:v2.7.1-patch-2819-2553-v1.9.4
     container_name: registry
     restart: always
     cap_drop:
@@ -46,11 +46,11 @@ services:
       - log
     logging:
       driver: "syslog"
-      options:  
+      options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "registry"
   registryctl:
-    image: goharbor/harbor-registryctl:v1.9.0
+    image: goharbor/harbor-registryctl:v1.9.4
     container_name: registryctl
     env_file:
       - ./common/config/registryctl/env
@@ -75,11 +75,11 @@ services:
       - log
     logging:
       driver: "syslog"
-      options:  
+      options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "registryctl"
   postgresql:
-    image: goharbor/harbor-db:v1.9.0
+    image: goharbor/harbor-db:v1.9.4
     container_name: harbor-db
     restart: always
     cap_drop:
@@ -100,11 +100,11 @@ services:
       - log
     logging:
       driver: "syslog"
-      options:  
+      options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "postgresql"
   core:
-    image: goharbor/harbor-core:v1.9.0
+    image: goharbor/harbor-core:v1.9.4
     container_name: harbor-core
     env_file:
       - ./common/config/core/env
@@ -138,11 +138,11 @@ services:
       - postgresql
     logging:
       driver: "syslog"
-      options:  
+      options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "core"
   portal:
-    image: goharbor/harbor-portal:v1.9.0
+    image: goharbor/harbor-portal:v1.9.4
     container_name: harbor-portal
     restart: always
     cap_drop:
@@ -160,7 +160,7 @@ services:
     volumes:
       - harbor_nginxdata/:/var/log/nginx/:rw
       - harbor_portal_data:/run:rw
-      - /data/harbor-portal/var/cache/nginx:/var/cache/nginx:z   
+      - /data/harbor-portal/var/cache/nginx:/var/cache/nginx:z
     logging:
       driver: "syslog"
       options:
@@ -168,7 +168,7 @@ services:
         tag: "portal"
 
   jobservice:
-    image: goharbor/harbor-jobservice:v1.9.0
+    image: goharbor/harbor-jobservice:v1.9.4
     container_name: harbor-jobservice
     env_file:
       - ./common/config/jobservice/env
@@ -195,7 +195,7 @@ services:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "jobservice"
   redis:
-    image: goharbor/redis-photon:v1.9.0
+    image: goharbor/redis-photon:v1.9.4
     container_name: redis
     restart: always
     cap_drop:
@@ -217,7 +217,7 @@ services:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "redis"
   proxy:
-    image: goharbor/nginx-photon:v1.9.0
+    image: goharbor/nginx-photon:v1.9.4
     container_name: nginx
     restart: always
     cap_drop:
@@ -236,7 +236,7 @@ services:
       - harbor
     dns_search: .
     ports:
-      - 8080:8080
+      - 8180:8080
     depends_on:
       - registry
       - core
@@ -244,7 +244,7 @@ services:
       - log
     logging:
       driver: "syslog"
-      options:  
+      options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "proxy"
 
@@ -252,7 +252,7 @@ networks:
   harbor:
     external: false
     name: harbor
-    
+
 volumes:
   harbor_logdata:
     name: harbor_logdata

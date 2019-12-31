@@ -1,8 +1,8 @@
-CORE_SECRET=fPkGmDDbGPztrER7
-JOBSERVICE_SECRET=fZQQkGS3TRGwRQMF
+CORE_SECRET=BPMVkJHanvwuTfZq
+JOBSERVICE_SECRET=kfp86E3SGgCjsrWL
 CORE_URL=http://core:8080
 JOBSERVICE_WEBHOOK_JOB_MAX_RETRY=10
 
 HTTP_PROXY=
 HTTPS_PROXY=
-NO_PROXY=127.0.0.1,localhost,.local,.internal,log,db,redis,nginx,core,portal,postgresql,jobservice,registry,registryctl,clair
+NO_PROXY=db,postgresql,clair,registryctl,localhost,notary-server,redis,127.0.0.1,log,nginx,chartmuseum,core,portal,.local,registry,.internal,jobservice,notary-signer

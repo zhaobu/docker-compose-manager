@@ -1,0 +1,69 @@
+version: "3.7"
+
+# 申明同一个网络
+networks:
+  mattermostnet:
+    name: mattermostnet
+
+volumes:
+  mattermostwebdata:
+    name: mattermostwebdata
+  mattermostdbdata:
+    name: mattermostdbdata
+  mattermostappdata:
+    name: mattermostappdata
+
+services:
+  db:
+    image: mattermost/mattermost-prod-db
+    restart: unless-stopped
+    networks:
+      mattermostnet:
+    volumes:
+      - mattermostdbdata:/var/run/postgresql
+      - ./volumes/db/usr/share/postgresql/:/usr/share/postgresql
+      - ./volumes/db/var/lib/postgresql/data:/var/lib/postgresql/data
+      - mattermostdbdata:/tmp
+      - ./volumes/db/etc/wal-e.d/env:/etc/wal-e.d/env
+      - /etc/localtime:/etc/localtime:ro
+    env_file: .env
+
+  app:
+    image: mattermost/mattermost-prod-app
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      mattermostnet:
+    volumes:
+      - ./volumes/app/config/:/mattermost/config:rw
+      - ./volumes/app/data:/mattermost/data:rw
+      - ./volumes/app/logs:/mattermost/logs:rw
+      - ./volumes/app/plugins:/mattermost/plugins:rw
+      - ./volumes/app/client-plugins:/mattermost/client/plugins:rw
+      - /etc/localtime:/etc/localtime:ro
+    env_file: .env
+    # environment:
+    #   - MM_SQLSETTINGS_DATASOURCE=postgres://${MM_USERNAME}:${MM_PASSWORD}@db:5432/${MM_DBNAME}?sslmode=disable&connect_timeout=10
+
+  web:
+    image: mattermost/mattermost-prod-web
+    ports:
+      - "2163:80"
+      - "7443:443"
+    read_only: true
+    restart: unless-stopped
+    networks:
+      mattermostnet:
+    volumes:
+      # This directory must have cert files if you want to enable SSL
+      - ./volumes/web/conf.d/:/etc/nginx/conf.d
+      - ./volumes/web/nginx.conf:/etc/nginx/nginx.conf
+      - ./volumes/web/log/:/var/log/nginx/:rw
+      - ./volumes/web/cert:/cert:ro
+      - /etc/localtime:/etc/localtime:ro
+      - mattermostwebdata:/var/cache/nginx
+      - mattermostwebdata:/var/run
+    # Uncomment for SSL
+    # environment:
+    #  - MATTERMOST_ENABLE_SSL=true
