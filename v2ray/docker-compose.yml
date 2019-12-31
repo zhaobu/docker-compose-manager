@@ -16,6 +16,7 @@ services:
       - ./caddy/log:/srv/
       - ./caddy/www:/var/www/html
       - ./key/:/root/.caddy/key/ #证书
+      - /etc/localtime:/etc/localtime
     environment:
       ACME_AGREE: "true"
     command: ["--conf=/etc/Caddyfile", "--log=stdout", "-agree"]
@@ -31,6 +32,8 @@ services:
       - ./nginx/log/:/var/log/nginx/:rw
       - v2raynginxdata/:/var/cache/nginx
       - v2raynginxdata/:/run
+      - /etc/localtime:/etc/localtime
+
     networks:
       - v2ray_net
     # dns_search: .
@@ -56,6 +59,7 @@ services:
     volumes:
       - ./v2ray/config.json:/etc/v2ray/config.json
       - ./v2ray/log/:/var/log/v2ray/
+      - /etc/localtime:/etc/localtime
     networks:
       - v2ray_net
     command: ["v2ray", "-config=/etc/v2ray/config.json"]
