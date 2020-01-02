@@ -11,7 +11,7 @@ networks:
 
 services:
   sonarqube:
-    image: sonarqube
+    image: sonarqube:8.1-community-beta
     container_name: sonarqube
     restart: always
     volumes:
