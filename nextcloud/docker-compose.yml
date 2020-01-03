@@ -1,0 +1,72 @@
+version: "3.7"
+
+networks:
+  nextcloudnet:
+    external: false
+    name: nextcloudnet
+
+services:
+  db:
+    image: postgres:alpine
+    # ports:
+    #   - 5432:5432
+    restart: always
+    container_name: nextcloud_postgres
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    env_file: db.env
+    networks:
+      nextcloudnet:
+
+  redis:
+    image: redis:latest
+    container_name: nextcloud_redis
+    networks:
+      nextcloudnet:
+    command: /usr/local/etc/redis/redis.conf
+    volumes:
+      # 持久存储redis的数据
+      - ./redis:/data
+      # 挂载本地配置文件
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - /etc/localtime:/etc/localtime
+
+  app:
+    image: nextcloud:fpm-alpine
+    container_name: nextcloud_server
+    volumes:
+      - ./nextcloud:/var/www/html
+    restart: always
+    env_file: db.env
+    environment:
+      - NEXTCLOUD_ADMIN_USER=admin
+      - NEXTCLOUD_ADMIN_PASSWORD=admin
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=nextcloud
+    networks:
+      nextcloudnet:
+    depends_on:
+      - db
+      - redis
+
+  proxy:
+    image: nginx:alpine
+    restart: always
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/log/:/var/log/nginx/:rw
+      - ./nginx/cache/:/var/cache/nginx
+      - /etc/localtime:/etc/localtime
+      - ./nginx/run:/run
+      # 需要映射到nextcloud的目录
+      - ./nextcloud:/var/www/html:ro
+    networks:
+      nextcloudnet:
+    ports:
+      - 8085:80
+    depends_on:
+      - app
+      - db
+      - redis
