@@ -1,4 +1,5 @@
 nextcloud/*
 nginx/*
+!nginx/nginx.conf
 postgres/*
 redis/*
