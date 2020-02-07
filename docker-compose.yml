@@ -16,7 +16,7 @@ services:
 
   # 内网穿透
   nps_server:
-    image: oldiy/nps-server
+    image: ffdfgdfg/nps:0.26.1
     container_name: nps_server
     restart: always
     ports:
@@ -28,8 +28,8 @@ services:
     networks:
       - docker_manger
     volumes:
-      - ./nps/server/conf/:/nps/conf/
-      - ./nps/server/logs/:/nps/logs/
+      - ./nps/server/conf/:/conf
+      # - ./nps/server/logs/:/nps/logs/
   # docker 可视化管理
   portainer:
     image: portainer/portainer:latest
