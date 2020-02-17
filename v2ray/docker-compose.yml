@@ -11,7 +11,7 @@ volumes:
 
 services:
   v2ray_caddy:
-    image: abiosoft/caddy
+    image: caddy/caddy
     container_name: v2ray_caddy
     restart: always
     ports:

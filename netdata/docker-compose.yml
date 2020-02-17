@@ -6,7 +6,7 @@ version: '3.7'
 services:
 # https服务器
   caddy:
-    image: abiosoft/caddy
+    image: caddy/caddy
     container_name: netdata_caddy
     restart: always
     ports:
