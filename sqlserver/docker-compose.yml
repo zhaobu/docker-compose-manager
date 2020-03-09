@@ -1,0 +1,22 @@
+version: "3.7"
+
+# 游戏数据卷
+volumes:
+  mssqldata:
+    name: mssqldata    
+
+# 服务
+services:
+  zjsqlserver:
+    image: mcr.azk8s.cn/mssql/server
+    restart: always
+    environment: 
+      ACCEPT_EULA : y
+      SA_PASSWORD : 1234@:LiWei
+    ports: 
+      - 9201:1433      
+    volumes:
+      - mssqldata:/var/opt/mssql
+      - /etc/localtime:/etc/localtime
+    # 模拟一个伪终端
+    tty: true    
