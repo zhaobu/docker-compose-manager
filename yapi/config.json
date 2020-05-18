@@ -1,0 +1,19 @@
+{
+    "adminAccount": "zhaobulw@qq.com",
+    "db": {
+        "servername": "yapi-mongo",
+        "port": 27017,
+        "DATABASE": "yapi"
+    },
+    "mail": {
+        "enable": false,
+        "auth": {}
+    },
+    "ldapLogin": {
+        "enable": false
+    },
+    "closeRegister": true,
+    "plugins": [],
+    "adminPassword": "zjsmdaigou",
+    "port": 3000
+}

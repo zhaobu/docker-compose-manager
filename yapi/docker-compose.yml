@@ -1,0 +1,69 @@
+version: "3.8"
+
+# 申明同一个网络
+networks:
+  yapi_net:
+    name: yapi_net
+    # external: true # 申明网络已经在外部创建
+
+# 游戏数据卷
+volumes:
+  yapi_mongodata:
+    name: yapi_mongodata
+
+services:
+  yapi-web:
+    image: jayfong/yapi:latest
+    ports:
+      - 40001:3000
+    volumes:
+      - ./config.json:/yapi/config.json:rw
+    environment:
+      # 基础配置
+      - YAPI_ADMIN_ACCOUNT=zhaobulw@qq.com #管理员账号
+      - YAPI_ADMIN_PASSWORD=zjsmdaigou #管理员密码
+      - YAPI_CLOSE_REGISTER=true #是否关闭注册，关闭注册后可通过插件 yapi-plugin-add-user 新增用户
+      - YAPI_NPM_REGISTRY="https://registry.npm.taobao.org" #npm 源，目前仅在安装插件时使用，默认官方源，国内可以设为淘宝源加速
+
+      # 数据库配置
+      - YAPI_DB_SERVERNAME=yapi-mongo #MongoDB 服务地址
+      - YAPI_DB_PORT=27017 #MongoDB 服务端口
+      - YAPI_DB_DATABASE=yapi #使用的 MongoDB 数据库
+      # - YAPI_DB_USER=root #登录 MongoDB 服务的用户名
+      # - YAPI_DB_PASS #登录 MongoDB 服务的用户密码
+
+      # 邮件配置
+      - YAPI_MAIL_ENABLE=false #是否启用
+      - YAPI_MAIL_HOST= #邮件服务地址
+      - YAPI_MAIL_PORT=  #邮件服务端口
+      - YAPI_MAIL_FROM= #发送人邮箱
+      - YAPI_MAIL_AUTH_USER= #登录邮件服务的用户名
+      - YAPI_MAIL_AUTH_PASS= #登录邮件服务的用户密码
+
+      #LDAP 登录配置
+      - YAPI_LDAP_LOGIN_ENABLE=false #是否启用
+      
+      #插件配置
+      - YAPI_PLUGINS=[]
+    depends_on:
+      - yapi-mongo
+    networks:
+      yapi_net:
+    restart: unless-stopped
+
+  yapi-mongo:
+    image: mongo:latest
+    # ports:
+    #   - "27017:27017"
+    networks:
+      yapi_net:
+        # 给网络取别名,可以用mongodb和db找到
+        aliases:
+          - db
+    command: ["mongod", "-f", "/etc/mongo/mongod.conf"]
+    volumes:
+      # 持久存储mongodb的数据
+      - yapi_mongodata:/data/db:rw
+      - yapi_mongodata:/data/configdb:rw
+      # 挂载本地配置文件
+      - ./mongod.conf:/etc/mongo/mongod.conf:rw
