@@ -1,26 +1,26 @@
-version: '3.7'
+version: "3.7"
 # volumes:
 #   caddy:
 #     name: netdata_caddy
 
 services:
-# https服务器
+  # https服务器
   caddy:
     image: caddy/caddy
     container_name: netdata_caddy
     restart: always
     ports:
       - 8480:80
-      - 8443:443
+      - 9443:443
     volumes:
       - ./caddy/Caddyfile.conf:/etc/Caddyfile
       - ./caddy/.caddy:/root/.caddy
       - ./caddy/www/:/srv/
     # environment:
     #   ACME_AGREE: 'true'
-    command: ["--conf=/etc/Caddyfile","--log=stdout","-port=80"]  
+    command: ["--conf=/etc/Caddyfile", "--log=stdout", "-port=80"]
 
-# 性能监测
+  # 性能监测
   netdata:
     restart: always
     hostname: netdata.cyhd.org
