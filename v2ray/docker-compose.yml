@@ -47,8 +47,8 @@ services:
       - v2ray_net
     # dns_search: .
     ports:
-      - 4070:80
-      - 4071:443
+      - 2488:80
+      - 2489:443
 
   # v2ray_tomcat:
   #   image: tomcat:latest
